@@ -486,11 +486,11 @@ function answersMatch(user, correct){
 function genArithmetic(){
   const t=pick(['add','sub','mul','mul2','div']);
   let q,answer,hint,format;
-  if(t==='add'){const a=ri(100,9999),b=ri(100,9999);q=`${a.toLocaleString()} + ${b.toLocaleString()} = ?`;answer=String(a+b);hint='Line up digits and add column by column.';format=`Just the number, e.g. ${a+b}`;}
-  else if(t==='sub'){const b=ri(100,4999),a=b+ri(100,4999);q=`${a.toLocaleString()} − ${b.toLocaleString()} = ?`;answer=String(a-b);hint='Use column subtraction — borrow if needed.';format=`Just the number, e.g. ${a-b}`;}
-  else if(t==='mul'){const a=ri(12,99),b=ri(2,9);q=`${a} × ${b} = ?`;answer=String(a*b);hint='Try partitioning or long multiplication.';format=`Just the number, e.g. ${a*b}`;}
-  else if(t==='mul2'){const a=ri(10,50),b=ri(10,50);q=`${a} × ${b} = ?`;answer=String(a*b);hint=`Partition: e.g. ${a}×${b} = ${a}×${Math.floor(b/10)*10} + ${a}×${b%10}`;format=`Just the number, e.g. ${a*b}`;}
-  else{const b=ri(2,9),ans=ri(10,999);q=`${b*ans} ÷ ${b} = ?`;answer=String(ans);hint=`How many groups of ${b}?`;format=`Just the number, e.g. ${ans}`;}
+  if(t==='add'){const a=ri(100,9999),b=ri(100,9999);q=`${a.toLocaleString()} + ${b.toLocaleString()} = ?`;answer=String(a+b);hint='Line up digits and add column by column.';format='Just the number — e.g. 4521';}
+  else if(t==='sub'){const b=ri(100,4999),a=b+ri(100,4999);q=`${a.toLocaleString()} − ${b.toLocaleString()} = ?`;answer=String(a-b);hint='Use column subtraction — borrow if needed.';format='Just the number — e.g. 2308';}
+  else if(t==='mul'){const a=ri(12,99),b=ri(2,9);q=`${a} × ${b} = ?`;answer=String(a*b);hint='Try partitioning or long multiplication.';format='Just the number — e.g. 336';}
+  else if(t==='mul2'){const a=ri(10,50),b=ri(10,50);q=`${a} × ${b} = ?`;answer=String(a*b);hint=`Partition: e.g. ${a}×${b} = ${a}×${Math.floor(b/10)*10} + ${a}×${b%10}`;format='Just the number — e.g. 720';}
+  else{const b=ri(2,9),ans=ri(10,999);q=`${b*ans} ÷ ${b} = ?`;answer=String(ans);hint=`How many groups of ${b}?`;format='Just the number — e.g. 47';}
   return{q,answer,hint,format,type:'input',badge:'➕ Arithmetic',c1:'#38bdf8',c2:'#818cf8',cat:'arithmetic'};
 }
 
@@ -498,42 +498,41 @@ function genFractions(){
   const t=pick(['frac_of','frac_dec','frac_pct','simplify','mixed_add','frac_mul']);
   if(t==='frac_of'){
     const d=pick([2,3,4,5,8,10]),n=ri(1,d-1),w=d*ri(2,10);
-    return{q:`What is ${n}/${d} of ${w}?`,answer:String(w*n/d),hint:`Divide ${w} by ${d}, then multiply by ${n}.`,format:`Just the number, e.g. ${w*n/d}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
+    return{q:`What is ${n}/${d} of ${w}?`,answer:String(w*n/d),hint:`Divide ${w} by ${d}, then multiply by ${n}.`,format:'Just the number — e.g. 15',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
   }
   if(t==='frac_dec'){
     const ps=[{f:'1/2',d:'0.5'},{f:'1/4',d:'0.25'},{f:'3/4',d:'0.75'},{f:'1/5',d:'0.2'},{f:'2/5',d:'0.4'},{f:'3/5',d:'0.6'},{f:'1/10',d:'0.1'},{f:'7/10',d:'0.7'},{f:'9/100',d:'0.09'}];
     const p=pick(ps);
     return Math.random()<.5
-      ?{q:`Convert ${p.f} to a decimal`,answer:p.d,hint:'Think: tenths or hundredths.',format:`Just the decimal, e.g. ${p.d}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'}
-      :{q:`Write ${p.d} as a fraction`,answer:p.f,hint:'What place value is the last digit?',format:`Write as numerator/denominator, e.g. ${p.f}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
+      ?{q:`Convert ${p.f} to a decimal`,answer:p.d,hint:'Think: tenths or hundredths.',format:'Write a decimal — e.g. 0.75',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'}
+      :{q:`Write ${p.d} as a fraction`,answer:p.f,hint:'What place value is the last digit?',format:'Write as top/bottom — e.g. 3/4',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
   }
   if(t==='frac_pct'){
     const ps=[{f:'1/2',p:'50%'},{f:'1/4',p:'25%'},{f:'3/4',p:'75%'},{f:'1/5',p:'20%'},{f:'2/5',p:'40%'},{f:'4/5',p:'80%'},{f:'1/10',p:'10%'},{f:'3/10',p:'30%'}];
     const p=pick(ps);
-    return{q:`What is ${p.f} as a percentage?`,answer:p.p,hint:'Find equivalent fraction over 100.',format:`Include the % sign, e.g. ${p.p}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
+    return{q:`What is ${p.f} as a percentage?`,answer:p.p,hint:'Find equivalent fraction over 100.',format:'Include the % sign — e.g. 75%',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
   }
   if(t==='simplify'){
     const sp=pick([{n:2,d:4,a:'1/2'},{n:4,d:8,a:'1/2'},{n:6,d:10,a:'3/5'},{n:4,d:10,a:'2/5'},{n:3,d:9,a:'1/3'},{n:6,d:9,a:'2/3'},{n:4,d:6,a:'2/3'},{n:6,d:8,a:'3/4'},{n:10,d:100,a:'1/10'}]);
-    return{q:`Simplify ${sp.n}/${sp.d}`,answer:sp.a,hint:'Divide top and bottom by the same number.',format:`Write as numerator/denominator, e.g. ${sp.a}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
+    return{q:`Simplify ${sp.n}/${sp.d}`,answer:sp.a,hint:'Divide top and bottom by the same number.',format:'Write as top/bottom — e.g. 2/5',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
   }
   if(t==='mixed_add'){
     const d=pick([2,4,5,10]),w1=ri(1,5),w2=ri(1,5),n1=ri(1,d-1),n2=ri(1,d-1);
     const tot=n1+n2,aw=w1+w2+Math.floor(tot/d),an=tot%d;
     const ans=an===0?String(aw):`${aw} ${an}/${d}`;
-    // Store clean canonical answer (no "and")
-    return{q:`${w1} ${n1}/${d} + ${w2} ${n2}/${d} = ?`,answer:ans,hint:'Add whole numbers, then the fractions.',format:an===0?`Just the whole number, e.g. ${aw}`:`Whole number then fraction, e.g. ${aw} ${an}/${d}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
+    return{q:`${w1} ${n1}/${d} + ${w2} ${n2}/${d} = ?`,answer:ans,hint:'Add whole numbers, then the fractions.',format:an===0?'A whole number — e.g. 6':'Whole number space fraction — e.g. 4 3/5',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
   }
   const d=pick([2,3,4,5,8,10]),n=ri(1,d-1),w=ri(2,10);
-  return{q:`${n}/${d} × ${w*d} = ?`,answer:String(n*w),hint:`Divide by ${d} first, then multiply by ${n}.`,format:`Just the number, e.g. ${n*w}`,type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
+  return{q:`${n}/${d} × ${w*d} = ?`,answer:String(n*w),hint:`Divide by ${d} first, then multiply by ${n}.`,format:'Just the number — e.g. 12',type:'input',badge:'🍕 Fractions',c1:'#a855f7',c2:'#ec4899',cat:'fractions'};
 }
 
 function genDecimals(){
   const t=pick(['round1dp','roundwhole','adddec','compare','subdec','place']);
-  if(t==='round1dp'){const n=(ri(100,9999)/100).toFixed(2);const ans=parseFloat(n).toFixed(1);return{q:`Round ${n} to 1 decimal place`,answer:ans,hint:'Look at the hundredths digit: ≥5 round up.',format:`One decimal place, e.g. ${ans}`,type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
-  if(t==='roundwhole'){const n=(ri(10,999)+ri(1,9)/10).toFixed(1);const ans=String(Math.round(parseFloat(n)));return{q:`Round ${n} to the nearest whole number`,answer:ans,hint:'If decimal ≥ 0.5, round up.',format:`A whole number, e.g. ${ans}`,type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
-  if(t==='adddec'){const a=(ri(1,20)+ri(0,9)/10).toFixed(1),b=(ri(1,20)+ri(0,9)/10).toFixed(1);const ans=(parseFloat(a)+parseFloat(b)).toFixed(1);return{q:`${a} + ${b} = ?`,answer:ans,hint:'Line up the decimal points.',format:`One decimal place, e.g. ${ans}`,type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
-  if(t==='subdec'){const b=(ri(1,10)+ri(0,9)/10).toFixed(1),a=(parseFloat(b)+ri(1,10)+ri(0,9)/10).toFixed(1);const ans=(parseFloat(a)-parseFloat(b)).toFixed(1);return{q:`${a} − ${b} = ?`,answer:ans,hint:'Line up decimal points. Borrow if needed.',format:`One decimal place, e.g. ${ans}`,type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
-  if(t==='place'){const ps=[{v:4.53,place:'tenths',ans:'5'},{v:3.78,place:'hundredths',ans:'8'},{v:12.06,place:'tenths',ans:'0'},{v:7.45,place:'hundredths',ans:'5'},{v:9.3,place:'tenths',ans:'3'}];const p=pick(ps);return{q:`What digit is in the ${p.place} place\nin ${p.v}?`,answer:p.ans,hint:'Tenths = 1st decimal digit. Hundredths = 2nd.',format:`Just a single digit, e.g. ${p.ans}`,type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
+  if(t==='round1dp'){const n=(ri(100,9999)/100).toFixed(2);const ans=parseFloat(n).toFixed(1);return{q:`Round ${n} to 1 decimal place`,answer:ans,hint:'Look at the hundredths digit: ≥5 round up.',format:'One decimal place — e.g. 7.4',type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
+  if(t==='roundwhole'){const n=(ri(10,999)+ri(1,9)/10).toFixed(1);const ans=String(Math.round(parseFloat(n)));return{q:`Round ${n} to the nearest whole number`,answer:ans,hint:'If decimal ≥ 0.5, round up.',format:'A whole number — e.g. 34',type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
+  if(t==='adddec'){const a=(ri(1,20)+ri(0,9)/10).toFixed(1),b=(ri(1,20)+ri(0,9)/10).toFixed(1);const ans=(parseFloat(a)+parseFloat(b)).toFixed(1);return{q:`${a} + ${b} = ?`,answer:ans,hint:'Line up the decimal points.',format:'One decimal place — e.g. 18.3',type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
+  if(t==='subdec'){const b=(ri(1,10)+ri(0,9)/10).toFixed(1),a=(parseFloat(b)+ri(1,10)+ri(0,9)/10).toFixed(1);const ans=(parseFloat(a)-parseFloat(b)).toFixed(1);return{q:`${a} − ${b} = ?`,answer:ans,hint:'Line up decimal points. Borrow if needed.',format:'One decimal place — e.g. 5.2',type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
+  if(t==='place'){const ps=[{v:4.53,place:'tenths',ans:'5'},{v:3.78,place:'hundredths',ans:'8'},{v:12.06,place:'tenths',ans:'0'},{v:7.45,place:'hundredths',ans:'5'},{v:9.3,place:'tenths',ans:'3'}];const p=pick(ps);return{q:`What digit is in the ${p.place} place\nin ${p.v}?`,answer:p.ans,hint:'Tenths = 1st decimal digit. Hundredths = 2nd.',format:'A single digit — e.g. 3',type:'input',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};}
   const cp=pick([{a:'0.5',b:'0.45',ans:'0.5'},{a:'0.4',b:'0.39',ans:'0.4'},{a:'9.4',b:'9.04',ans:'9.4'},{a:'0.7',b:'0.69',ans:'0.7'},{a:'1.3',b:'1.29',ans:'1.3'}]);
   const opts=shuffle([cp.a,cp.b]);
   return{q:`Which is greater?\n${opts[0]}  or  ${opts[1]}`,options:opts,answer:cp.ans,hint:'Compare digit by digit from the left.',type:'choice',badge:'🔢 Decimals',c1:'#f5a623',c2:'#ef4444',cat:'decimals'};
@@ -541,38 +540,38 @@ function genDecimals(){
 
 function genGeometry(){
   const t=pick(['rect_area','rect_perim','sq_side','sq_remaining','perim_sq','tri_area']);
-  if(t==='rect_area'){const l=ri(3,20),w=ri(2,15);return{q:`Rectangle: ${l} cm long, ${w} cm wide.\nWhat is the area?`,answer:`${l*w} cm²`,hint:'Area = length × width',format:`Include units, e.g. ${l*w} cm²  (or just ${l*w})`,type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
-  if(t==='rect_perim'){const l=ri(3,20),w=ri(2,15);return{q:`Rectangle: ${l} cm long, ${w} cm wide.\nWhat is the perimeter?`,answer:`${2*(l+w)} cm`,hint:'Perimeter = 2 × (length + width)',format:`Include units, e.g. ${2*(l+w)} cm  (or just ${2*(l+w)})`,type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
-  if(t==='sq_side'){const s=ri(2,12);return{q:`A square has area ${s*s} cm².\nWhat is the side length?`,answer:`${s} cm`,hint:`What number × itself = ${s*s}?`,format:`Include units, e.g. ${s} cm  (or just ${s})`,type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
-  if(t==='sq_remaining'){const big=ri(6,15),small=ri(2,big-2);return{q:`Big square: ${big} cm side.\nSmall square (${small} cm) cut out.\nRemaining area?`,answer:`${big*big-small*small} cm²`,hint:`${big}² − ${small}² = ?`,format:`Include units, e.g. ${big*big-small*small} cm²  (or just ${big*big-small*small})`,type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
-  if(t==='perim_sq'){const s=ri(3,15);return{q:`A square has side length ${s} cm.\nWhat is its perimeter?`,answer:`${4*s} cm`,hint:'Perimeter of square = 4 × side',format:`Include units, e.g. ${4*s} cm  (or just ${4*s})`,type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
-  const b=ri(4,20),h=ri(3,15);return{q:`Triangle: base ${b} cm, height ${h} cm.\nWhat is the area?`,answer:`${b*h/2} cm²`,hint:'Area = ½ × base × height',format:`Include units, e.g. ${b*h/2} cm²  (or just ${b*h/2})`,type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};
+  if(t==='rect_area'){const l=ri(3,20),w=ri(2,15);return{q:`Rectangle: ${l} cm long, ${w} cm wide.\nWhat is the area?`,answer:`${l*w} cm²`,hint:'Area = length × width',format:'Number + cm² — e.g. 48 cm²  (or just 48)',type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
+  if(t==='rect_perim'){const l=ri(3,20),w=ri(2,15);return{q:`Rectangle: ${l} cm long, ${w} cm wide.\nWhat is the perimeter?`,answer:`${2*(l+w)} cm`,hint:'Perimeter = 2 × (length + width)',format:'Number + cm — e.g. 34 cm  (or just 34)',type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
+  if(t==='sq_side'){const s=ri(2,12);return{q:`A square has area ${s*s} cm².\nWhat is the side length?`,answer:`${s} cm`,hint:`What number × itself = ${s*s}?`,format:'Number + cm — e.g. 7 cm  (or just 7)',type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
+  if(t==='sq_remaining'){const big=ri(6,15),small=ri(2,big-2);return{q:`Big square: ${big} cm side.\nSmall square (${small} cm) cut out.\nRemaining area?`,answer:`${big*big-small*small} cm²`,hint:`${big}² − ${small}² = ?`,format:'Number + cm² — e.g. 75 cm²  (or just 75)',type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
+  if(t==='perim_sq'){const s=ri(3,15);return{q:`A square has side length ${s} cm.\nWhat is its perimeter?`,answer:`${4*s} cm`,hint:'Perimeter of square = 4 × side',format:'Number + cm — e.g. 28 cm  (or just 28)',type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};}
+  const b=ri(4,20),h=ri(3,15);return{q:`Triangle: base ${b} cm, height ${h} cm.\nWhat is the area?`,answer:`${b*h/2} cm²`,hint:'Area = ½ × base × height',format:'Number + cm² — e.g. 30 cm²  (or just 30)',type:'input',badge:'📐 Geometry',c1:'#4ecca3',c2:'#38bdf8',cat:'geometry'};
 }
 
 function genProblems(){
   const idx=ri(0,5);
   if(idx===0){
     const beads=ri(80,200),per=ri(6,12),full=Math.floor(beads/per),rem=beads%per;
-    return{q:`Rosie has ${beads} beads.\nEach bracelet uses ${per} beads.\nHow many full bracelets can she make?\nHow many beads are left over?`,answer:`${full} bracelets, ${rem} left`,hint:`${beads} ÷ ${per} = ? remainder ?`,format:`Two numbers separated by comma, e.g. ${full} bracelets, ${rem} left`,type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
+    return{q:`Rosie has ${beads} beads.\nEach bracelet uses ${per} beads.\nHow many full bracelets can she make?\nHow many beads are left over?`,answer:`${full} bracelets, ${rem} left`,hint:`${beads} ÷ ${per} = ? remainder ?`,format:'Two numbers — e.g. 14 bracelets, 3 left',type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
   }
   if(idx===1){
     const days=pick([4,6,8,10,12,14]),tins=days/2*0.5;
-    return{q:`Amir's cat eats half a tin every 2 days.\nHow many tins in ${days} days?`,answer:`${tins}`,hint:`${days} ÷ 2 = pairs of days. Each pair = 0.5 tins.`,format:`Just the number, e.g. ${tins}`,type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
+    return{q:`Amir's cat eats half a tin every 2 days.\nHow many tins in ${days} days?`,answer:`${tins}`,hint:`${days} ÷ 2 = pairs of days. Each pair = 0.5 tins.`,format:'Just the number — e.g. 2.5',type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
   }
   if(idx===2){
     const fs=[{n:1,d:2},{n:1,d:4},{n:3,d:4},{n:2,d:5},{n:3,d:5}];const f=pick(fs),total=f.d*ri(3,20),spent=total*f.n/f.d,left=total-spent;
-    return{q:`Dexter has £${total}.\nHe spends ${f.n}/${f.d} of it.\nHow much does he have left?`,answer:`${left}`,hint:`Find ${f.n}/${f.d} of £${total}, then subtract.`,format:`Just the number (with or without £), e.g. ${left} or £${left}`,type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
+    return{q:`Dexter has £${total}.\nHe spends ${f.n}/${f.d} of it.\nHow much does he have left?`,answer:`${left}`,hint:`Find ${f.n}/${f.d} of £${total}, then subtract.`,format:'Just the number, with or without £ — e.g. 45 or £45',type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
   }
   if(idx===3){
     const packs=ri(3,8),per=ri(6,15),extra=ri(1,per-1),total=packs*per+extra;
-    return{q:`Cookies come in packs of ${per}.\nSam has ${total} cookies.\nHow many full packs?\nHow many cookies left over?`,answer:`${packs} packs, ${extra} left`,hint:`Divide ${total} by ${per}.`,format:`Two numbers separated by comma, e.g. ${packs} packs, ${extra} left`,type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
+    return{q:`Cookies come in packs of ${per}.\nSam has ${total} cookies.\nHow many full packs?\nHow many cookies left over?`,answer:`${packs} packs, ${extra} left`,hint:`Divide ${total} by ${per}.`,format:'Two numbers — e.g. 5 packs, 3 left',type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
   }
   if(idx===4){
     const pph=ri(8,20),hrs=ri(3,8);
-    return{q:`A printer prints ${pph} pages per hour.\nHow many pages in ${hrs} hours?`,answer:`${pph*hrs}`,hint:`Multiply: ${pph} × ${hrs}`,format:`Just the number, e.g. ${pph*hrs}`,type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
+    return{q:`A printer prints ${pph} pages per hour.\nHow many pages in ${hrs} hours?`,answer:`${pph*hrs}`,hint:`Multiply: ${pph} × ${hrs}`,format:'Just the number — e.g. 72',type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
   }
   const shaded=ri(5,95);
-  return{q:`${shaded} out of 100 squares are shaded.\nWhat percentage is shaded?`,answer:`${shaded}%`,hint:'Out of 100 = percentage directly!',format:`Include the % sign, e.g. ${shaded}%  (or just ${shaded})`,type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
+  return{q:`${shaded} out of 100 squares are shaded.\nWhat percentage is shaded?`,answer:`${shaded}%`,hint:'Out of 100 = percentage directly!',format:'Include the % sign — e.g. 42%  (or just 42)',type:'input',badge:'🧩 Problems',c1:'#ec4899',c2:'#f5a623',cat:'problems'};
 }
 
 function genMixed(){return pick([genArithmetic,genFractions,genDecimals,genGeometry,genProblems])();}
