@@ -194,6 +194,15 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .confetti-piece{position:fixed;top:-12px;border-radius:2px;pointer-events:none;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:0;}}
 
+/* AVATAR PICKER */
+.avatar-picker{margin-bottom:.9rem;display:none;}
+.avatar-picker.show{display:block;}
+.avatar-picker-label{font-size:.78rem;color:var(--soft);margin-bottom:.5rem;text-align:center;}
+.avatar-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:.35rem;}
+.avatar-opt{background:var(--card2);border:2px solid transparent;border-radius:10px;padding:.35rem;font-size:1.4rem;cursor:pointer;text-align:center;transition:all .15s;line-height:1;-webkit-tap-highlight-color:transparent;}
+.avatar-opt:hover{border-color:var(--soft);transform:scale(1.1);}
+.avatar-opt.selected{border-color:var(--blue);background:rgba(56,189,248,.15);transform:scale(1.1);}
+
 /* EMPTY */
 .empty-state{text-align:center;color:var(--soft);padding:2rem 1rem;font-size:.88rem;}
 .empty-state .icon{font-size:2.2rem;display:block;margin-bottom:.5rem;}
@@ -217,6 +226,10 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
     <div class="new-player-row">
       <input type="text" class="text-input" id="new-name" placeholder="Enter your name..." maxlength="16" autocomplete="off">
       <button class="add-btn" onclick="addPlayer()">Add ➕</button>
+    </div>
+    <div class="avatar-picker" id="avatar-picker">
+      <div class="avatar-picker-label">Choose your avatar 👇</div>
+      <div class="avatar-grid" id="avatar-grid"></div>
     </div>
   </div>
 </div>
@@ -325,7 +338,26 @@ function getPlayer(name){
 }
 function savePlayer(p){const db=loadDB();db.players[p.name]=p;saveDB(db);}
 function getAllPlayers(){return Object.values(loadDB().players);}
-const AVATARS=['🧑','👦','👧','🧒','👩','🧔','🦸','🦹','🧙','🧝','🐶','🐱','🦊','🐸','🐯','🐼'];
+const AVATARS=['🧑','👦','👧','🧒','👩','🧔','🦸','🦹','🧙','🧝','🧜','🧚','🐶','🐱','🦊','🐸','🐯','🐼','🦁','🐨','🐮','🐷','🐙','🦋','🦄','🐲','🚀','⭐','🎮','⚽','🏆','🎯'];
+let selectedAvatar=AVATARS[0];
+
+function buildAvatarPicker(){
+  const grid=document.getElementById('avatar-grid');
+  grid.innerHTML='';
+  AVATARS.forEach(av=>{
+    const btn=document.createElement('button');
+    btn.className='avatar-opt'+(av===selectedAvatar?' selected':'');
+    btn.textContent=av;
+    btn.type='button';
+    btn.onclick=()=>{
+      selectedAvatar=av;
+      grid.querySelectorAll('.avatar-opt').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+    grid.appendChild(btn);
+  });
+}
+
 function randomAvatar(){return AVATARS[Math.floor(Math.random()*AVATARS.length)];}
 
 // ── STATE ────────────────────────────────────────────────
@@ -352,9 +384,26 @@ function addPlayer(){
   const inp=document.getElementById('new-name');
   const name=inp.value.trim();
   if(!name||name.length<2){inp.style.borderColor='var(--accent)';setTimeout(()=>inp.style.borderColor='',1000);return;}
-  getPlayer(name);inp.value='';renderLoginScreen();
+  const p=getPlayer(name);
+  p.avatar=selectedAvatar;
+  savePlayer(p);
+  inp.value='';
+  selectedAvatar=AVATARS[0];
+  document.getElementById('avatar-picker').classList.remove('show');
+  renderLoginScreen();
 }
 document.getElementById('new-name').addEventListener('keydown',e=>{if(e.key==='Enter')addPlayer();});
+document.getElementById('new-name').addEventListener('input',e=>{
+  const picker=document.getElementById('avatar-picker');
+  if(e.target.value.trim().length>0){
+    if(!picker.classList.contains('show')){
+      picker.classList.add('show');
+      buildAvatarPicker();
+    }
+  } else {
+    picker.classList.remove('show');
+  }
+});
 function delPlayer(e,name){
   e.stopPropagation();
   if(!confirm(`Delete "${name}"? All scores will be lost.`))return;
